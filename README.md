@@ -1,6 +1,6 @@
 # Map Editor of Happiness (MEH)
 
-![MEH_mainScreen](resources/MEH_main_screen.png)
+![MEH_mainScreen](screenshots/MEH_main_screen.png)
 
 MEH is a Generation III Map Editor for Pokemon games for the GameBoy Advance:
 - Fire Red
@@ -8,12 +8,6 @@ MEH is a Generation III Map Editor for Pokemon games for the GameBoy Advance:
 - Ruby
 - Sapphire
 - Emerald
-
-## Table of Contents
-
-- [About](#about)
-- [Improvements](#improvements)
-- [Dependencies](#dependencies)
 
 ## About
 

@@ -9,6 +9,12 @@
 	<name>MEH</name>
 	<description>Map Editor of Happiness</description>
 
+    <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.ini4j/ini4j -->
 		<dependency>
@@ -41,7 +47,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>us.plxhack.MEH.Main</mainClass>
+                            <mainClass>dev.enseor.MEH.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -71,7 +77,7 @@
                     <descriptors>
                         <descriptor>assembly.xml</descriptor>
                     </descriptors>
-                    <finalName>AndroidScreenCapture_${project.version}</finalName>
+                    <finalName>${project.artifactId}_${project.version}</finalName>
                     <outputDirectory>${project.build.directory}/dist</outputDirectory>
                     <workDirectory>${project.build.directory}/assembly/work</workDirectory>
                 </configuration>

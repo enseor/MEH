@@ -1,0 +1,73 @@
+package dev.enseor.MEH.UI;
+
+import GBAUtils.BitConverter;
+import dev.enseor.MEH.IO.Map.MapIO;
+import dev.enseor.MEH.MapElements.Trigger;
+import dev.enseor.MEH.MapElements.TriggerManager;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
+public class TriggerPanel extends JPanel {
+
+	private final JTextField txtFlagValue;
+	private final JTextField txtScriptAddr;
+	private final JTextField txtFlagCheck;
+	int myIndex;
+
+	void Load(TriggerManager mgr, int index) {
+		Trigger t = mgr.mapTriggers.get(index);
+		txtScriptAddr.setText(BitConverter.toHexString((int) t.pScript));
+		txtFlagValue.setText(BitConverter.toHexString(t.hFlagValue));
+		txtFlagCheck.setText(BitConverter.toHexString(t.hFlagCheck));
+	}
+
+	public void Save(TriggerManager mgr) {
+		mgr.mapTriggers.get(myIndex).pScript = Integer.parseInt(txtScriptAddr.getText(), 16);
+		mgr.mapTriggers.get(myIndex).hFlagValue = Integer.parseInt(txtFlagValue.getText(), 16);
+		mgr.mapTriggers.get(myIndex).hFlagCheck = Integer.parseInt(txtFlagCheck.getText(), 16);
+	}
+
+	/**
+	 * Create the panel.
+	 */
+	public TriggerPanel(TriggerManager mgr, int index) {
+		myIndex = index;
+		setBorder(new TitledBorder(null, "Triggers", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
+		JLabel lblScriptAddr = new JLabel("Script Addr:");
+		add(lblScriptAddr);
+
+		txtScriptAddr = new JTextField();
+		txtScriptAddr.setColumns(10);
+		add(txtScriptAddr);
+
+		JLabel lblFlagcheck = new JLabel("FlagCheck:");
+		add(lblFlagcheck);
+
+		txtFlagCheck = new JTextField();
+		txtFlagCheck.setColumns(10);
+		add(txtFlagCheck);
+
+		JLabel lblNewLabel = new JLabel("Flag Value:");
+		add(lblNewLabel);
+
+		txtFlagValue = new JTextField();
+		add(txtFlagValue);
+		txtFlagValue.setColumns(10);
+
+		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(e -> Save(MapIO.loadedMap.mapTriggerManager));
+		add(btnSave);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Flag Operations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panel);
+		panel.setLayout(null);
+
+		JButton button = new JButton("New button");
+		add(button);
+
+		Load(mgr, index);
+	}
+}
