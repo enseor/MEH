@@ -7,11 +7,9 @@ import org.ini4j.Ini;
 
 public class DataStore {
 
-	// Everything we parse from the Ini
 	public static Ini iP;
 	private static Boolean passedTraits;
 
-	// private Parser p;//For when we have YAML reading as well
 	public static float Str2Float(String nkey) {
 		int CommentIndex;
 		float ReturnValue;
@@ -19,11 +17,11 @@ public class DataStore {
 		try {
 			CommentIndex = nkey.indexOf(";");
 			if (CommentIndex != -1) {
-				nkey = nkey.substring(0, CommentIndex);// Get rid of the comment
+				nkey = nkey.substring(0, CommentIndex);
 			}
 			FinalString = nkey;
 			ReturnValue = Float.parseFloat(FinalString);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			ReturnValue = 0;
 		}
 		return ReturnValue;
@@ -36,14 +34,14 @@ public class DataStore {
 		try {
 			CommentIndex = nkey.indexOf(";");
 			if (CommentIndex != -1) {
-				nkey = nkey.substring(0, CommentIndex);// Get rid of the comment
+				nkey = nkey.substring(0, CommentIndex);
 			}
 			FinalString = nkey;
 			if (nkey.contains("0x")) {
 				FinalString = nkey.substring(2);
 				ReturnValue = Long.parseLong(FinalString, 16);
 			} else ReturnValue = Long.parseLong(FinalString);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			ReturnValue = 0;
 		}
 		return ReturnValue;
@@ -73,7 +71,7 @@ public class DataStore {
 			CommentIndex = nkey.indexOf(";");
 			if (CommentIndex != -1) {
 
-				nkey = nkey.substring(0, CommentIndex);// Get rid of the comment
+				nkey = nkey.substring(0, CommentIndex);
 			}
 			FinalString = nkey;
 			ReturnValue = FinalString;
@@ -91,13 +89,11 @@ public class DataStore {
 		WriteString(Section, key, bool ? "true" : "false");
 	}
 	
-	void ReadData(String ROMHeader) {
-		// Read all the entries.
+	private void ReadData(String ROMHeader) {
 		Inherit = iP.get(ROMHeader, "Inherit");
 		if (!passedTraits) {
-			// Genes passed, let's snip the traits.
 			passedTraits = true;
-			ReadData(Inherit);// Grab inherited values
+			ReadData(Inherit);
 		}
 		EngineVersion = ReadNumberEntry(ROMHeader, "Engine");
 		Name = iP.get(ROMHeader, "Name");
@@ -156,14 +152,12 @@ public class DataStore {
 		for (i = 0; i < mBS.length; i++) {
 			MapBankSize[i] = Integer.parseInt(mBS[i]);
 		}
-		// Read the data for MEH
 		String[] awmgfx = (ReadString(ROMHeader, "WorldMapGFX")).split(",");
 		String[] wmdp = ReadString(ROMHeader, "WorldMapPal").split(",");
 		String[] wmptm = ReadString(ROMHeader, "WorldMapTileMap").split(",");
 		String[] wmpds = ReadString(ROMHeader, "WorldMapSlot").split(",");
 		String[] ps = ReadString(ROMHeader, "WorldMapPalSize").split(",");
 		WorldMapCount = (int) ReadNumberEntry(ROMHeader, "WorldMapCount");
-		// Grab them all
 
 		WorldMapGFX = new int[WorldMapCount];
 		WorldMapPal = new int[WorldMapCount];
@@ -171,7 +165,6 @@ public class DataStore {
 		WorldMapSlot = new int[WorldMapCount];
 		WorldMapPalSize = new int[WorldMapCount];
 		for (i = 0; i < WorldMapCount; i++) {
-			// Sometimes weird things happen
 			WorldMapGFX[i] = (int) Str2Num(awmgfx[i]);
 			WorldMapPal[i] = (int) Str2Num(wmdp[i]);
 			WorldMapTileMap[i] = (int) Str2Num(wmptm[i]);
@@ -274,7 +267,7 @@ public class DataStore {
 	public static int NumPokemon = 412;
 	public static int SpeciesNames;
 	public static boolean mehMetTripleTiles = false;
-	public static boolean bDataStoreInited;// Not stored in INI :p
+	public static boolean bDataStoreInited;
 	public static void meetTripleTiles()
 	{
 		WriteBoolean("MEH", "mehMetTripleTiles", true);
