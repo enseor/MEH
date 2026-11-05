@@ -1,9 +1,9 @@
 package GBAUtils;
 
-import org.ini4j.Ini;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.ini4j.Ini;
 
 public class DataStore {
 
@@ -94,7 +94,7 @@ public class DataStore {
 	void ReadData(String ROMHeader) {
 		// Read all the entries.
 		Inherit = iP.get(ROMHeader, "Inherit");
-		if (passedTraits = false) {
+		if (!passedTraits) {
 			// Genes passed, let's snip the traits.
 			passedTraits = true;
 			ReadData(Inherit);// Grab inherited values
