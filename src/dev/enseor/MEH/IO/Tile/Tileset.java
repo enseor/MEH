@@ -40,11 +40,11 @@ public class Tileset {
 			lastPrimary = this;
 		int[] uncompressedData = null;
 		if(tilesetHeader.bCompressed == 1)
-			uncompressedData = Lz77.decompressLZ77(rom, imageDataPtr);
+			uncompressedData = Lz77Compressor.decompressLZ77(rom, imageDataPtr);
 		if(uncompressedData == null) {
-			GBARom backup = (GBARom) rom.clone(); //Backup in case repairs fail
-			rom.writeBytes((int)tilesetHeader.pGFX, (tilesetHeader.isPrimary ? globalTSLZHeader : localTSLZHeader)); //Attempt to repair the LZ77 data
-			uncompressedData = Lz77.decompressLZ77(rom, imageDataPtr);
+			GBARom backup = (GBARom) rom.clone();
+			rom.writeBytes((int)tilesetHeader.pGFX, (tilesetHeader.isPrimary ? globalTSLZHeader : localTSLZHeader));
+			uncompressedData = Lz77Compressor.decompressLZ77(rom, imageDataPtr);
 			rom = (GBARom) backup.clone(); //TODO add dialog to allow repairs to be permanant
 			if(uncompressedData == null) {
 				uncompressedData = BitConverter.ToInts(rom.readBytes(imageDataPtr, (tilesetHeader.isPrimary ? 128*DataStore.MainTSHeight : 128*DataStore.LocalTSHeight) / 2)); //TODO: Hardcoded to FR tileset sizes

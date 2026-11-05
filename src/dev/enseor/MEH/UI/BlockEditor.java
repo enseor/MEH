@@ -54,7 +54,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import GBAUtils.Lz77;
+import GBAUtils.Lz77Compressor;
 import GBAUtils.ROMManager;
 
 import dev.enseor.MEH.IO.Map.MapIO;
@@ -444,11 +444,11 @@ public class BlockEditor extends JDialog {
 					MapIO.blockRenderer.getLocalTileset().setPalette(p,MapIO.blockRenderer.currentTime);
 					
 					GBAImage i = GBAImage.fromImage(tileset, p[tpp.viewingPalette]);
-					byte[] compData = Lz77.compressLZ77(i.getRaw());
+					byte[] compData = Lz77Compressor.compressLZ77(i.getRaw());
 					int freespace = ROMManager.getActiveROM().findFreespace(compData.length);
 					ROMManager.currentROM.writeBytes(freespace, compData);
 					ROMManager.currentROM.floodBytes((int)MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pGFX, 
-							DataStore.FreespaceByte, Lz77.getUncompressedSize(ROMManager.currentROM, 
+							DataStore.FreespaceByte, Lz77Compressor.getUncompressedSize(ROMManager.currentROM, 
 									(int)MapIO.blockRenderer.getGlobalTileset().tilesetHeader.pGFX));
 										//TODO: Make removing old data optional
 					
@@ -505,11 +505,11 @@ public class BlockEditor extends JDialog {
 					MapIO.blockRenderer.getLocalTileset().setPalette(p,MapIO.blockRenderer.currentTime);
 					
 					GBAImage i = GBAImage.fromImage(tileset, p[tpp.viewingPalette]);
-					byte[] compData = Lz77.compressLZ77(i.getRaw());
+					byte[] compData = Lz77Compressor.compressLZ77(i.getRaw());
 					int freespace = ROMManager.getActiveROM().findFreespace(compData.length);
 					ROMManager.currentROM.writeBytes(freespace, compData);
 					ROMManager.currentROM.floodBytes((int)MapIO.blockRenderer.getLocalTileset().tilesetHeader.pGFX, 
-							DataStore.FreespaceByte, Lz77.getUncompressedSize(ROMManager.currentROM, 
+							DataStore.FreespaceByte, Lz77Compressor.getUncompressedSize(ROMManager.currentROM, 
 									(int)MapIO.blockRenderer.getLocalTileset().tilesetHeader.pGFX));
 										//TODO: Make removing old data optional
 					MapIO.blockRenderer.getLocalTileset().tilesetHeader.pGFX = freespace;

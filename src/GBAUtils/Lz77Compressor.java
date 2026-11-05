@@ -10,10 +10,10 @@ import dsdecmp.*;
  * @author maxamillion
  *
  */
-public class Lz77 {
+public class Lz77Compressor {
 	public static int getUncompressedSize(GBARom ROM, int offset)
 	{
-		return NewLz77.getLz77DataLength(ROM, offset);
+		return Lz77Algorithm.getLz77DataLength(ROM, offset);
 	}
 	
 	public static int[] decompressLZ77(GBARom ROM, int offset) {
@@ -45,7 +45,7 @@ public class Lz77 {
 	public static int[] compressLZ77(byte[] data) {
 		byte[] bytes;
 		try {
-			bytes = NewLz77.compressLZ10(data);
+			bytes = Lz77Algorithm.compressLZ10(data);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -56,7 +56,7 @@ public class Lz77 {
 	public static byte[] compressLZ77(int[] dats) {
 		byte[] bytes = null;
 		try {
-			bytes = NewLz77.compressLZ10(BitConverter.toBytes(dats));
+			bytes = Lz77Algorithm.compressLZ10(BitConverter.toBytes(dats));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

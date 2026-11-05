@@ -2,7 +2,7 @@ package GBAUtils;
 
 import java.io.ByteArrayOutputStream;
 
-public class NewLz77 {
+public class Lz77Algorithm {
 	public enum CheckLz77Type {
 		Sprite, Palette
 	}
