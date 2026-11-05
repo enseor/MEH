@@ -129,7 +129,6 @@ public class GBARom implements Cloneable {
 		try {
 			loadRomToBytes();
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		
@@ -148,7 +147,7 @@ public class GBARom implements Cloneable {
 	 * For "BPEE" header code:
 	 * - Always sets RTC flag and checks for DNPkmnPatch presence.
 	 */
-	public void updateFlags() {
+	private void updateFlags() {
 		if(headerCode.equalsIgnoreCase("BPRE")) {
 			if(readByte(0x082903) == 0x8)
 				isDNPkmnPatchAdded = true;
@@ -165,7 +164,7 @@ public class GBARom implements Cloneable {
 	 * Loads the content of the ROM file into the byte array 'rom_bytes'.
 	 * Throws an IOException if there's an issue reading the file.
 	 */
-	public void loadRomToBytes() throws IOException {
+	private void loadRomToBytes() throws IOException {
 		File file = new File(input_filepath);
 		try (InputStream is = Files.newInputStream(file.toPath())) {
 			long length = file.length();
@@ -302,24 +301,12 @@ public class GBARom implements Cloneable {
 	}
 
 	public int commitChangesToROMFile() {
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(input_filepath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return 1;
-		}
-		try {
+		try (FileOutputStream fos = new FileOutputStream(input_filepath)) {
 			fos.write(rom_bytes);
+		} catch (FileNotFoundException e) {
+			return 1;
 		} catch (IOException e) {
-			e.printStackTrace();
 			return 2;
-		}
-		try {
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return 3;
 		}
 		return 0;
 	}
@@ -360,23 +347,23 @@ public class GBARom implements Cloneable {
 	 */
 	public void loadHexTBLFromFile(String tbl_path) throws IOException {
 		File file = new File(tbl_path);
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] separated = line.split("=");
-			String key;
-			String value;
-
-			if (separated.length > 1) {
-				key = separated[0];
-				value = separated[1];
-			} else {
-				key = separated[0];
-				value = " ";
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] separated = line.split("=");
+				String key;
+				String value;
+				
+				if (separated.length > 1) {
+					key = separated[0];
+					value = separated[1];
+				} else {
+					key = separated[0];
+					value = " ";
+				}
+				hex_tbl.put(key, value);
 			}
-			hex_tbl.put(key, value);
 		}
-		br.close();
 	}
 	
 	/**
@@ -384,23 +371,23 @@ public class GBARom implements Cloneable {
 	 * @param tbl_path File path to the character table
 	 */
 	public void loadHexTBL(String tbl_path) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(GBARom.class.getResourceAsStream(tbl_path))));
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] seperated = line.split("=");
-			String key;
-			String value;
-
-			if (seperated.length > 1) {
-				key = seperated[0];
-				value = seperated[1];
-			} else {
-				key = seperated[0];
-				value = " ";
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(GBARom.class.getResourceAsStream(tbl_path))))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] seperated = line.split("=");
+				String key;
+				String value;
+				
+				if (seperated.length > 1) {
+					key = seperated[0];
+					value = seperated[1];
+				} else {
+					key = seperated[0];
+					value = " ";
+				}
+				hex_tbl.put(key, value);
 			}
-			hex_tbl.put(key, value);
 		}
-		br.close();
 	}
 
 	/**
@@ -459,7 +446,7 @@ public class GBARom implements Cloneable {
 	 * @param length The amount of text to read
 	 * @return Returns the text as a String object
 	 */
-	public String readText(int offset, int length) {
+	private String readText(int offset, int length) {
 		return new String(BitConverter.GrabBytes(rom_bytes, offset, length));
 	}
 	
@@ -696,11 +683,8 @@ public class GBARom implements Cloneable {
 		 System.out.println("Found " + totalMatches + " occurences of the pointer specified.");
 	}
 	
-	public Object clone(){  
-	    try{  
-	        return super.clone();  
-	    }catch(Exception e){ 
-	        return null; 
-	    }
+	@Override
+	public GBARom clone() throws CloneNotSupportedException {
+    	return (GBARom) super.clone();
 	}
 }
