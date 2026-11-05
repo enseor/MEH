@@ -1,7 +1,15 @@
 package GBAUtils;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +36,6 @@ public class GBARom implements Cloneable {
 	public boolean isRTCAdded = false;
 	public boolean isDNPkmnPatchAdded = false;
 
-	/**
-	 * Loads a ROM using a file dialog.
-	 */
 	public static String getLocationFromFileDialog() {
 		boolean errorOccurred = false;
 		String location = "";
@@ -46,21 +51,17 @@ public class GBARom implements Cloneable {
 			fd.setDirectory(System.getProperty("user.home"));
 			fd.setVisible(true);
 			String dialogLocation = fd.getDirectory() + fd.getFile();
-			if (dialogLocation.isEmpty()) { // The user canceled the selection
-				location = ""; // Set to empty string to signify canceled selection
-			} else {// Valid location obtained from FileDialog
+			if (dialogLocation.isEmpty()) {
+				location = "";
+			} else {
 				location = dialogLocation;
 			}
-		} catch (NullPointerException | SecurityException e) { // Catch specific exceptions that might indicate an error
-			e.printStackTrace();
-			errorOccurred = true; // Set error flag
+		} catch (NullPointerException | SecurityException e) {
+			errorOccurred = true;
 		}
 		return errorOccurred ? null : location;
 	}
 
-	/**
-	 * Loads a ROM using a file chooser.
-	 */
 	public static String getLocationFromFileChooser() {
 		FileFilter filter = new FileNameExtensionFilter("GBA ROM", "gba", "bin");
 		JFileChooser fileChooser = new JFileChooser();
@@ -100,7 +101,6 @@ public class GBARom implements Cloneable {
 		try {
 			ROMManager.AddROM(romID, new GBARom(location));}
 		catch (IOException e) {
-			e.printStackTrace();
 			return -2;
 		}
 		ROMManager.ChangeROM(romID);
@@ -109,7 +109,6 @@ public class GBARom implements Cloneable {
 				ROMManager.getActiveROM().loadHexTBL("/resources/poketable.tbl");
 			}
 			catch (IOException e) {
-				e.printStackTrace();
 				return -3;
 			}
 		}

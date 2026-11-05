@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 
 public class GBAImage {
-	private Palette p;
-	private int[] data;
-	private Point size;
+	private final Palette p;
+	private final int[] data;
+	private final Point size;
 	
 	public GBAImage(int[] imageBytes, Palette palette, Point size) {
 		p = palette;

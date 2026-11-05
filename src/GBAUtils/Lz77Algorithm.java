@@ -9,8 +9,8 @@ public class Lz77Algorithm {
 
 	// For picking what type of Compression Look-up we want
 	public enum CompressionMode {
-		Old, // Good
-		New // Perfect!
+		Old,
+		New
 	}
 
 	public static int getLz77DataLength(GBARom rom, int offset) {
@@ -66,7 +66,6 @@ public class Lz77Algorithm {
 			else {
 				// 3 or more bytes can be copied? next (length) bytes will be compressed into 2 bytes
 				readBytes += length;
-				// mark the next block as compressed
 				outbuffer[0] |= (byte) (1 << (7 - bufferedBlocks));
 				outbuffer[bufferlength] = (byte) (((length - 3) << 4) & 0xF0);
 				outbuffer[bufferlength] |= (byte) (((disp - 1) >> 8) & 0x0F);

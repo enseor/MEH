@@ -1,9 +1,10 @@
 package GBAUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ROMManager {
-	public static Map<Integer, GBARom> screenStore = new HashMap<Integer, GBARom>();
+	public static Map<Integer, GBARom> screenStore = new HashMap<>();
 	public static GBARom currentROM = null;
 	
 	public static GBARom getActiveROM()
@@ -12,12 +13,10 @@ public class ROMManager {
 	}
 
 	public static void AddROM(int stateId, GBARom rom) {
-		//System.Diagnostics.Debug.Assert(Exists(stateId));
 		screenStore.put(stateId,rom);
 	}
 
 	public static void ChangeROM(int stateId) {
-		//System.Diagnostics.Debug.Assert(Exists(stateId));
 		currentROM = (GBARom) screenStore.get(stateId);
 	}
 

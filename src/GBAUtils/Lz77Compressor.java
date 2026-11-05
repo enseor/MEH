@@ -3,7 +3,8 @@ package GBAUtils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import dsdecmp.*;
+import dsdecmp.Compression;
+import dsdecmp.HexInputStream;
 
 /**
  * Wrapper of debloat's Lz77 algorithm adapted for purposes within GBA ROM Hacking
@@ -24,7 +25,6 @@ public class Lz77Compressor {
 			return Compression.Decompress(hexstream);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -37,7 +37,6 @@ public class Lz77Compressor {
 			return Compression.Decompress(hexstream);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -47,20 +46,16 @@ public class Lz77Compressor {
 		try {
 			bytes = Lz77Algorithm.compressLZ10(data);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 		return BitConverter.ToInts(bytes);
 	}
 	
 	public static byte[] compressLZ77(int[] dats) {
-		byte[] bytes = null;
 		try {
-			bytes = Lz77Algorithm.compressLZ10(BitConverter.toBytes(dats));
+			return Lz77Algorithm.compressLZ10(BitConverter.toBytes(dats));
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
-		return bytes;
 	}
 }

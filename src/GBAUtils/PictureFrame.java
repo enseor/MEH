@@ -1,18 +1,14 @@
 package GBAUtils;
 
+import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import java.awt.BorderLayout;
-import java.awt.Image;
-
 public class PictureFrame extends JFrame {
 	public static boolean isOpen = false;
 	
-	/**
-	 * Serial Stuffs
-	 */
 	private static final long serialVersionUID = -5311502864811966111L;
 
 	public PictureFrame(BufferedImage img) {
