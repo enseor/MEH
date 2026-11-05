@@ -5,17 +5,18 @@
     </formats>
     <filesets>
         <fileset>
+            <directory>${project.basedir}</directory>
             <includes>
                 <include>README*</include>
                 <include>LICENSE*</include>
-                <include>NOTICE*</include>
+                <include>MEH.ini</include>
             </includes>
         </fileset>
         <fileset>
             <directory>target</directory>
             <outputDirectory/>
             <includes>
-                <include>*.jar</include>
+                <include>${project.build.finalName}.jar</include>
             </includes>
         </fileset>
         <fileset>
